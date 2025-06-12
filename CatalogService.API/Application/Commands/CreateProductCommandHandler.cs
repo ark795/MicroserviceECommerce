@@ -1,4 +1,5 @@
-﻿using CatalogService.API.Domain.Entities;
+﻿using CatalogService.API.Contracts;
+using CatalogService.API.Domain.Entities;
 using CatalogService.API.Infrastructure.Persistence;
 using MassTransit;
 using MediatR;
@@ -30,12 +31,12 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
         await _context.SaveChangesAsync();
 
         //publish event
-        //await _publishEndpoint.Publish(new ProductCreatedEvent
-        //{
-        //    Id = product.Id,
-        //    Name = product.Name,
-        //    Price = product.Price
-        //});
+        await _publishEndpoint.Publish(new ProductCreated
+        {
+            Id = product.Id,
+            Name = product.Name,
+            Price = product.Price
+        });
 
         return product;
     }

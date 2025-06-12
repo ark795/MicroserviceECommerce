@@ -1,4 +1,5 @@
-﻿using CatalogService.API.Infrastructure.Persistence;
+﻿using CatalogService.API.Contracts;
+using CatalogService.API.Infrastructure.Persistence;
 using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -24,12 +25,12 @@ public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand,
         _context.Products.Remove(product);
         await _context.SaveChangesAsync();
 
-        //await _publishEndpoint.Publish(new ProductCreatedEvent
-        //{
-        //    Id = product.Id,
-        //    Name = product.Name,
-        //    Price = product.Price,
-        //});
+        await _publishEndpoint.Publish(new ProductCreated
+        {
+            Id = product.Id,
+            Name = product.Name,
+            Price = product.Price,
+        });
         return true;
     }
 }
