@@ -43,8 +43,11 @@ namespace CheckoutService.API.Controllers
                 }).ToList()
             };
 
-            var response = await _client.GetResponse<Guid>(command);
-            return Ok(response.Message);
+            var response = await _client.GetResponse<Response<Guid>>(command);
+            return Ok(response.Message.Message);
+
+            //var response = await _client.GetResponse<Guid>(command);
+            //return Ok(response.Message);
         }
     }
 }
