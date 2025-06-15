@@ -1,6 +1,7 @@
 ﻿using BasketService.API.Domain.Entities;
 using CheckoutService.API.Domain.Entities;
 using CheckoutService.API.Infrastructure.Data;
+using OrderService.API.Application.Responses;
 using MassTransit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -43,11 +44,8 @@ namespace CheckoutService.API.Controllers
                 }).ToList()
             };
 
-            var response = await _client.GetResponse<Response<Guid>>(command);
-            return Ok(response.Message.Message);
-
-            //var response = await _client.GetResponse<Guid>(command);
-            //return Ok(response.Message);
+            var response = await _client.GetResponse<CreateOrderResponse>(command);
+            return Ok(response.Message.OrderId);
         }
     }
 }
